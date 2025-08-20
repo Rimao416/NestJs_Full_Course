@@ -24,8 +24,11 @@ export class AuthService {
         id: true,
         email: true,
         createdAt: true,
+        updatedAt: true,
+        // hash: false (pas besoin de le mentionner)
       },
     });
+
     return user;
   }
 }
