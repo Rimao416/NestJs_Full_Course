@@ -1,24 +1,17 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import type { User } from 'generated/prisma';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { JwtGuard } from 'src/auth/guard';
-
-interface AuthenticatedRequest extends Request {
-  user: {
-    userId: string;
-    email: string;
-  };
-}
 
 @Controller('user')
 export class UserController {
   @UseGuards(JwtGuard)
   @Get('me')
-  getMe(@Req() req: AuthenticatedRequest) {
-    // ✅ req.user est défini par JwtStrategy.validate()
-    console.log(req.user);
-    return {
-      message: 'User profile',
-      user: req.user,
-    };
+  getMe(@GetUser() user: User) {
+    console.log(user);
+    return user;
   }
+
+  @Patch('me')
+  editUser() {}
 }
